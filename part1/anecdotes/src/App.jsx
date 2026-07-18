@@ -21,8 +21,7 @@ const Statistics = ({ anecdotes, votes }) => {
   let keyOfMax = 0;
 
   votes.forEach((value, key) => {
-    keyOfMax =
-      (votes.get(key) ?? 0) > (votes.get(keyOfMax) ?? 0) ? key : keyOfMax;
+    keyOfMax = votes.get(key) > (votes.get(keyOfMax) ?? 0) ? key : keyOfMax;
   });
 
   return (
