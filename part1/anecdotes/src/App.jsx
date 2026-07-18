@@ -5,7 +5,7 @@ function getRandomInt(max) {
 }
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
-const Statistics = ({ votes, selected }) => {
+const Votes = ({ votes, selected }) => {
   if (!votes.has(selected)) {
     return <></>;
   }
@@ -13,6 +13,23 @@ const Statistics = ({ votes, selected }) => {
   return (
     <>
       <p>has {votes.get(selected)} votes</p>
+    </>
+  );
+};
+
+const Statistics = ({ anecdotes, votes }) => {
+  let keyOfMax = 0;
+
+  votes.forEach((value, key) => {
+    keyOfMax =
+      (votes.get(key) ?? 0) > (votes.get(keyOfMax) ?? 0) ? key : keyOfMax;
+  });
+
+  return (
+    <>
+      <h1>anecdote with the highest votes</h1>
+      <p>{anecdotes[keyOfMax]}</p>
+      <Votes votes={votes} selected={keyOfMax} />
     </>
   );
 };
@@ -33,7 +50,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(getRandomInt(count));
   const [votes, setVotes] = useState(new Map());
-  const Randomize = () => {
+  const randomize = () => {
     let next = getRandomInt(count);
     while (next == selected) {
       next = getRandomInt(count);
@@ -53,9 +70,11 @@ const App = () => {
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <Statistics votes={votes} selected={selected} />
-      <Button text="next" onClick={() => setSelected(Randomize)} />
+      <Votes votes={votes} selected={selected} />
+      <Button text="next" onClick={() => setSelected(randomize)} />
       <Button text="vote" onClick={UpdateVotes} />
+
+      <Statistics anecdotes={anecdotes} votes={votes} />
     </div>
   );
 };
