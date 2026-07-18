@@ -33,7 +33,6 @@ const App = () => {
 
   const [selected, setSelected] = useState(getRandomInt(count));
   const [votes, setVotes] = useState(new Map());
-  votes.get();
   const Randomize = () => {
     let next = getRandomInt(count);
     while (next == selected) {
