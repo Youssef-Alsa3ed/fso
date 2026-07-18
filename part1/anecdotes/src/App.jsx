@@ -5,6 +5,18 @@ function getRandomInt(max) {
 }
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>;
 
+const Statistics = ({ votes, selected }) => {
+  if (!votes.has(selected)) {
+    return <></>;
+  }
+
+  return (
+    <>
+      <p>has {votes.get(selected)} votes</p>
+    </>
+  );
+};
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -20,7 +32,8 @@ const App = () => {
   const count = anecdotes.length;
 
   const [selected, setSelected] = useState(getRandomInt(count));
-
+  const [votes, setVotes] = useState(new Map());
+  votes.get();
   const Randomize = () => {
     let next = getRandomInt(count);
     while (next == selected) {
@@ -30,10 +43,20 @@ const App = () => {
     return next;
   };
 
+  const UpdateVotes = () => {
+    const newVotes = new Map(votes);
+    if (!newVotes.has(selected)) {
+      newVotes.set(selected, 0);
+    }
+    newVotes.set(selected, newVotes.get(selected) + 1);
+    setVotes(newVotes);
+  };
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <Statistics votes={votes} selected={selected} />
       <Button text="next" onClick={() => setSelected(Randomize)} />
+      <Button text="vote" onClick={UpdateVotes} />
     </div>
   );
 };
