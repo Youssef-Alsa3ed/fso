@@ -13,19 +13,27 @@ const Person = ({ person }) => {
   );
 };
 
-const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "040-123456", id: 1 },
-    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
-  ]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
-  const [search, setSearch] = useState("");
+const Filter = ({ search, setSearch }) => {
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
+
+  return (
+    <>
+      {" "}
+      <form>
+        <div>
+          search: <input value={search} onChange={handleSearch} />
+        </div>
+      </form>
+    </>
+  );
+};
+
+const PersonForm = ({ persons, setPersons }) => {
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+
   const handleNameChange = (event) => {
     setNewName(event.target.value);
   };
@@ -52,20 +60,8 @@ const App = () => {
     setNewNumber("");
   };
 
-  const personsToShow = isEmpty(search)
-    ? persons
-    : persons.filter((person) =>
-        person.name.toLowerCase().startsWith(search.toLowerCase()),
-      );
   return (
-    <div>
-      <h2>Phonebook</h2>
-      <form>
-        <div>
-          search: <input value={search} onChange={handleSearch} />
-        </div>
-      </form>
-      <h2>Add a new</h2>
+    <>
       <form onSubmit={handleSubmit}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -78,10 +74,43 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
+    </>
+  );
+};
+
+const PersonList = ({ persons, search }) => {
+  const personsToShow = isEmpty(search)
+    ? persons
+    : persons.filter((person) =>
+        person.name.toLowerCase().startsWith(search.toLowerCase()),
+      );
+
+  return (
+    <>
       {personsToShow.map((person, index) => (
         <Person key={index} person={person} />
       ))}
+    </>
+  );
+};
+
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+  ]);
+  const [search, setSearch] = useState("");
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <Filter search={search} setSearch={setSearch} />
+      <h2>Add a new</h2>
+      <PersonForm persons={persons} setPersons={setPersons} />
+      <h2>Numbers</h2>
+      <PersonList persons={persons} search={search} />
     </div>
   );
 };
