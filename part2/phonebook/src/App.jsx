@@ -14,6 +14,13 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    for (let person of persons) {
+      if (newName === person.name) {
+        alert(`${newName} is already added to phonebook`);
+        return;
+      }
+    }
     const newObject = {
       name: newName,
     };
