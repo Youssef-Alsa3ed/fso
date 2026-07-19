@@ -1,5 +1,5 @@
 const Header = ({ course }) => {
-  return <h1>{course.name}</h1>;
+  return <h2>{course.name}</h2>;
 };
 
 const Part = ({ part }) => {
@@ -24,7 +24,7 @@ const Total = ({ parts }) => {
 
   return (
     <>
-      <p>Number of exercises: {total}</p>
+      <h3>total of {total} exercises</h3>
     </>
   );
 };
@@ -32,6 +32,7 @@ const Total = ({ parts }) => {
 const Courses = ({ courses }) => {
   return (
     <>
+      <h1>Web Development Curriculum</h1>
       {courses.map((course) => {
         return (
           <div key={course.id}>
