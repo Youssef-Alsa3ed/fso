@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { remove, getAll, create } from "./services/persons";
+import { remove, getAll, create, update } from "./services/persons";
 
 import { Filter, PersonForm, PersonList } from "./components/persons";
 
@@ -24,14 +24,18 @@ const App = () => {
 
   const handleCreation = (newPerson) => {
     for (let person of persons) {
-      if (
-        newPerson.name === person.name ||
-        newPerson.number === person.number
-      ) {
-        let str =
-          newPerson.name === person.name ? newPerson.name : newPerson.number;
-        alert(`${str} is already added to phonebook`);
-        return;
+      if (newPerson.name === person.name) {
+        let isDuplicate = newPerson.number === person.number;
+        if (isDuplicate) {
+          alert(`${person.name} is already added to phonebook`);
+          return;
+        } else {
+          let id = person.id;
+          update(id, newPerson).then((data) =>
+            setPersons(persons.map((p) => (p.id === id ? data : p))),
+          );
+          return;
+        }
       }
     }
     create(newPerson)
