@@ -6,7 +6,7 @@ Solutions for the University of Helsinki's Full Stack Open course.
 
 - [x] Part 0
 - [x] Part 1
-- [ ] Part 2
+- [x] Part 2
 - [ ] Part 3
 - [ ] Part 4
 - [ ] Part 5
