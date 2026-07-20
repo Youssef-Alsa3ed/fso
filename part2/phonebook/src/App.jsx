@@ -25,11 +25,13 @@ const App = () => {
   };
   const handleDeletion = (id) => {
     const deletedPerson = persons.find((person) => person.id === id);
-    remove(id).then(() => {
-      setPersons((currentPersons) =>
-        currentPersons.filter((person) => person.id !== id),
-      );
-    });
+    remove(id)
+      .then(() => {
+        setPersons((currentPersons) =>
+          currentPersons.filter((person) => person.id !== id),
+        );
+      })
+      .catch(() => notify("the person doesn't exist", "red"));
 
     notify(`${deletedPerson.name} has been deleted from the phonebook`, "red");
   };
@@ -43,9 +45,16 @@ const App = () => {
           return;
         } else {
           let id = person.id;
-          update(id, newPerson).then((data) =>
-            setPersons(persons.map((p) => (p.id === id ? data : p))),
-          );
+          update(id, newPerson)
+            .then((data) =>
+              setPersons(persons.map((p) => (p.id === id ? data : p))),
+            )
+            .catch(() =>
+              notify(
+                `information of ${person.name} has been already removed from the server.`,
+                "red",
+              ),
+            );
           notify(`${person.name}'s number has been updated.`);
           return;
         }
