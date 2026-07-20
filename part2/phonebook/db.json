@@ -21,14 +21,9 @@
       "id": "4"
     },
     {
-      "name": "youssef",
-      "number": "01553593534",
-      "id": "NG_cpVTdN14"
-    },
-    {
-      "name": "mostafa",
-      "number": "0100508090",
-      "id": "FdUQ6iSjynw"
+      "name": "bobby",
+      "number": "050321331",
+      "id": "d8owUbqg5QA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
