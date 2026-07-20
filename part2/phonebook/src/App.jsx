@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+
+import { getAll, create } from "./services/persons";
 
 function isEmpty(str) {
   return !str || str.length === 0;
@@ -56,9 +57,11 @@ const PersonForm = ({ persons, setPersons }) => {
       name: newName,
       number: newNumber,
     };
-    setPersons(persons.concat(newObject));
-    setNewName("");
-    setNewNumber("");
+    create(newObject).then((data) => {
+      setPersons(persons.concat(newObject));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   return (
@@ -82,9 +85,11 @@ const PersonForm = ({ persons, setPersons }) => {
 const PersonList = ({ persons, search }) => {
   const personsToShow = isEmpty(search)
     ? persons
-    : persons.filter((person) =>
-        person.name.toLowerCase().startsWith(search.toLowerCase()),
-      );
+    : persons.filter((person) => {
+        // had a bug where sometimes data returned from the server may be corrupt when i was testing putting objects in the db
+        // so using optional chaining here
+        return person.name?.toLowerCase().includes(search.toLowerCase());
+      });
 
   return (
     <>
@@ -100,13 +105,11 @@ const App = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    console.log("effect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("promise succeeded.");
-      setPersons(response.data);
+    getAll().then((data) => {
+      setPersons(data);
     });
   }, []);
-  console.log("render");
+
   return (
     <div>
       <h2>Phonebook</h2>
