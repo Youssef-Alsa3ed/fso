@@ -4,8 +4,21 @@ function isEmpty(str) {
   return !str || str.length === 0;
 }
 
-const Country = ({ country }) => {
-  return <p>{country.name.common}</p>;
+const Country = ({ country, setSearch }) => {
+  return (
+    <>
+      <p>
+        {country.name.common}
+        <button
+          onClick={() => {
+            setSearch(country.name.common);
+          }}
+        >
+          show
+        </button>
+      </p>
+    </>
+  );
 };
 
 const CountryContent = ({ country }) => {
@@ -26,7 +39,7 @@ const CountryContent = ({ country }) => {
     </>
   );
 };
-const Countries = ({ countries, search }) => {
+const Countries = ({ countries, search, setSearch }) => {
   if (isEmpty(search)) {
     return null;
   }
@@ -45,7 +58,7 @@ const Countries = ({ countries, search }) => {
   return (
     <>
       {countriesToShow?.map((country, index) => (
-        <Country key={index} country={country} />
+        <Country key={index} country={country} setSearch={setSearch} />
       ))}
     </>
   );
@@ -72,7 +85,7 @@ function App() {
         </div>
       </form>
 
-      <Countries countries={countries} search={search} />
+      <Countries countries={countries} search={search} setSearch={setSearch} />
     </>
   );
 }
